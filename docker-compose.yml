@@ -1,0 +1,32 @@
+version: '3.5'
+
+services:
+
+  web:
+    restart: always
+    build: ./web
+    container_name: web
+    ports:
+      - 8000
+    networks:
+      - elk-net
+    depends_on:
+      - elk
+    volumes:
+      - "./web:/home/"
+    command: bash -c "/etc/init.d/filebeat start && ping localhost"
+
+  elk:
+    image: sebp/elk
+    build: ./elk
+    container_name: elk
+    ports:
+      - "5601:5601"  # Kibana
+      - "9200:9200"  # Elasticsearch
+      - "5044:5044"  # LogStash
+    networks:
+      - elk-net
+
+networks:
+  elk-net:
+    driver: bridge

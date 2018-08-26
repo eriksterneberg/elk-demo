@@ -1,0 +1,10 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /home/*.log
+
+#----------------------------- Logstash output --------------------------------
+
+output.logstash:
+  hosts: ["elk:5044"]
